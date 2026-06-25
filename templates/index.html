@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Predicción de Precio de Diamantes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <main class="page">
+        <section class="hero">
+            <div>
+                <p class="eyebrow">Proyecto de Regresión · CRISP-DM</p>
+                <h1>Predicción de Precio de Diamantes</h1>
+                <p class="subtitle">
+                    Estima el precio de un diamante a partir de sus características físicas y de calidad.
+                </p>
+            </div>
+        </section>
+
+        <section class="card">
+            <form method="POST" class="form-grid">
+                <div class="field">
+                    <label for="carat">Carat</label>
+                    <input type="number" step="0.01" min="0.01" name="carat" id="carat" value="{{ input_values.carat }}" required />
+                    <small>Peso del diamante en quilates.</small>
+                </div>
+
+                <div class="field">
+                    <label for="cut">Cut</label>
+                    <select name="cut" id="cut" required>
+                        {% for option in cut_options %}
+                        <option value="{{ option }}" {% if input_values.cut == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                    <small>Calidad del corte.</small>
+                </div>
+
+                <div class="field">
+                    <label for="color">Color</label>
+                    <select name="color" id="color" required>
+                        {% for option in color_options %}
+                        <option value="{{ option }}" {% if input_values.color == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                    <small>Escala de color de D a J.</small>
+                </div>
+
+                <div class="field">
+                    <label for="clarity">Clarity</label>
+                    <select name="clarity" id="clarity" required>
+                        {% for option in clarity_options %}
+                        <option value="{{ option }}" {% if input_values.clarity == option %}selected{% endif %}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                    <small>Nivel de claridad del diamante.</small>
+                </div>
+
+                <div class="field">
+                    <label for="depth">Depth</label>
+                    <input type="number" step="0.01" min="0.01" name="depth" id="depth" value="{{ input_values.depth }}" required />
+                    <small>Profundidad porcentual.</small>
+                </div>
+
+                <div class="field">
+                    <label for="table">Table</label>
+                    <input type="number" step="0.01" min="0.01" name="table" id="table" value="{{ input_values.table }}" required />
+                    <small>Ancho de la tabla superior.</small>
+                </div>
+
+                <div class="field">
+                    <label for="x">X</label>
+                    <input type="number" step="0.01" min="0.01" name="x" id="x" value="{{ input_values.x }}" required />
+                    <small>Largo en milímetros.</small>
+                </div>
+
+                <div class="field">
+                    <label for="y">Y</label>
+                    <input type="number" step="0.01" min="0.01" name="y" id="y" value="{{ input_values.y }}" required />
+                    <small>Ancho en milímetros.</small>
+                </div>
+
+                <div class="field">
+                    <label for="z">Z</label>
+                    <input type="number" step="0.01" min="0.01" name="z" id="z" value="{{ input_values.z }}" required />
+                    <small>Profundidad en milímetros.</small>
+                </div>
+
+                <div class="actions">
+                    <button type="submit">Calcular precio estimado</button>
+                </div>
+            </form>
+
+            {% if prediction is not none %}
+            <div class="result success">
+                <span>Precio estimado</span>
+                <strong>${{ "{:,.2f}".format(prediction) }} USD</strong>
+            </div>
+            {% endif %}
+
+            {% if error %}
+            <div class="result error">
+                {{ error }}
+            </div>
+            {% endif %}
+        </section>
+
+        <footer>
+            Modelo de regresión entrenado con el Diamonds Dataset · Flask + Render
+        </footer>
+    </main>
+</body>
+</html>
